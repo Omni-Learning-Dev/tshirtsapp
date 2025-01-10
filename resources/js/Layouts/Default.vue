@@ -2,7 +2,8 @@
     <v-app id="inspire">
         <v-app-bar class="glass-shadow">
             <v-app-bar-title>
-                Welcome to Laravel
+               Capital Kreatives<br>
+               Branding
             </v-app-bar-title>
 
             <v-spacer></v-spacer>
@@ -13,10 +14,23 @@
                 </v-btn>
             </InertiaLink>
 
-            <InertiaLink :href="route('register')">
+            <!-- <InertiaLink :href="route('register')">
                 <v-btn>
                     Register
                 </v-btn>
+            </InertiaLink> -->
+
+            <InertiaLink :href="route('register')">
+                <b-btn>
+                    Home
+                </b-btn>
+
+            </InertiaLink>
+            
+            <InertiaLink :href="route('register')">
+                <b-btn>
+                    Contact
+                </b-btn>
             </InertiaLink>
         </v-app-bar>
 

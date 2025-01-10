@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -22,3 +23,5 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::get('/contact',[ContactController::class,'index']);
