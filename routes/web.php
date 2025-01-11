@@ -1,27 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ContactController;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
-
-Route::get('/contact',[ContactController::class,'index'])->name('Contact');
+Route::get('/', [PagesController::class,'welcome'])->name('welcome');
+Route::get('/contact',[PagesController::class,'contact'])->name('Contact');
