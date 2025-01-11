@@ -24,4 +24,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/contact',[ContactController::class,'index']);
+Route::get('/contact',[ContactController::class,'index'])->name('Contact');
