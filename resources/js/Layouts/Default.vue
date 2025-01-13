@@ -6,6 +6,12 @@
             <img height="50px" class="ml-2" src="/images/logo-main.png" alt="Capital Creatives Logo">
         </InertiaLink>
       <v-spacer></v-spacer>
+      <InertiaLink class="InertiaLinkMenu mx-1" :href="route('login')">
+        <v-btn variant="text" color="primary">
+          Login
+        </v-btn>
+      </InertiaLink>
+
 
       <InertiaLink class="InertiaLinkMenu mx-1" :href="route('welcome')">
         <v-btn variant="text" color="primary">

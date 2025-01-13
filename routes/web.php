@@ -6,3 +6,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PagesController::class,'welcome'])->name('welcome');
 Route::get('/contact',[PagesController::class,'contact'])->name('Contact');
+
+include(__DIR__. '/admin.php');

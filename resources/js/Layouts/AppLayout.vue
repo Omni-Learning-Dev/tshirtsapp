@@ -1,15 +1,57 @@
-<script setup>
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+<script  >
 
-defineProps({
-    title: String,
-});
+export default{
+    watch: {
+        $page: {
+            handler() {
+                const message = this.$page.props.flash.message;
+                if (message != null) {
+                    if(!message.optionRoute){
+                        this.$swal.fire({
+                            icon: message.type,
+                            title: message.title,
+                            text: message.description
+                        })
 
-const drawer = ref(null)
-const logout = () => {
-    router.post(route('logout'));
-};
+                    }else{
+
+                        this.$swal.fire({
+                            title: message.title,
+                            text:message.optiontext,
+                            icon: message.type,
+                            showCancelButton: true,
+                            confirmButtonColor: '#42a848',
+                            cancelButtonColor: '#d33',
+                            cancelButtonText: 'Close',
+                            confirmButtonText: 'Yes, Proceed'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.$inertia.visit(message.optionRoute)
+                            }
+                        })
+                    }
+                }
+            },
+        },
+    },
+
+    props:['title'],
+
+    data(){
+        return{
+            drawer:null
+        }
+    },
+
+    methods:{
+       logout() {
+            //router.post(route('logout'));
+        }
+    }
+}
+ 
+ 
+
 </script>
 
 <template>
