@@ -43,13 +43,14 @@ class CategoryController extends Controller
 
         return back()->with('message',[
             'type' => 'success',
-            'description' => 'Category detaiils added successfully',
+            'description' => 'Category details added successfully',
         ]);
 
 
         }
         
         public function show(Category $category){
+
 
         }
         
@@ -62,13 +63,15 @@ class CategoryController extends Controller
         }
         
         public function destroy($id){
-            $category =Category::find($id);
+            $category = Category::find($id);
             $category->delete();
             
             return back()->with('message',[
                 'type' =>'success',
-                'title' =>'student Deleted'
+                'title' =>'categgory Deleted'
             ]);
         }
+
+        
     
     }

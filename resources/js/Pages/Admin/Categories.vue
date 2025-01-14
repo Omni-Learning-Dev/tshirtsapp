@@ -44,12 +44,7 @@
                         </v-row>
                         <v-row class="mt-n3">
                             <v-col cols="12" md="6">
-                                <v-file-input
-                                    v-model="form.preview_image"
-                                    label="  Preview Image"
-                                   
-                                    prepend-icon=""
-                                />
+                                
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-text-field
@@ -113,7 +108,7 @@
             >
             <template v-slot:item.actions="{ item }">
                 <div class="d-flex">
-                    <v-btn class="mx-1" color="success">
+                    <v-btn class="mx-1" color="success" @click="showCategory(item)">
                         View
                     </v-btn>
                     
@@ -128,6 +123,9 @@
             </template>
         </v-data-table>
     </div>
+    
+
+  
 </AppLayout>
    
 </template>
@@ -185,6 +183,8 @@ export default {
             this.dialog = false;
             this.form.reset();
         },
+
+       
         editCategory(category) {
             this.form.id = category.id;
             this.form.name = category.name;
@@ -198,7 +198,7 @@ export default {
         },
         deleteCategory(category) {
             this.$swal.fire({
-                title: "Are you sure you want to delete this category?"+ category.id,
+                title: "Are you sure you want to delete this category?"+ category.name,
                 showDenyButton: true,
                 showCancelButton: false,
                 confirmButtonText: "Yes, delete it",
@@ -211,6 +211,9 @@ export default {
                 }
             });
         },
+
+       
     },
 };
 </script>
+

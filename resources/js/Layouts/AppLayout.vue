@@ -35,11 +35,25 @@ export default{
         },
     },
 
+
     props:['title'],
 
     data(){
         return{
-            drawer:null
+            drawer:false,
+            items:[
+                {
+                    text: "Dashboard",
+                    icon: '',
+                    url:route('login')
+                },
+
+                {
+                    text: "Login",
+                    icon: '',
+                    url:route('login')
+                }
+            ]
         }
     },
 
@@ -58,10 +72,41 @@ export default{
     <Head :title="title"/>
     <v-app id="inspire">
         <v-navigation-drawer v-model="drawer">
-            <!--  -->
+            <v-list density="comfortable" class="mt-n3">
+                <v-list>
+                    <v-list-item class="text-center">
+                        <img height="35"  src="/images/logo.png" alt="name">
+                        <v-list-item-title>
+                            <b> {{ $page.props.auth.user.name }}</b>
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ $page.props.auth.user.email }}
+                        </v-list-item-subtitle>
+                    </v-list-item>
+                </v-list>
+                <v-divider class="my-2"/>
+                <InertiaLink
+                    class="InertiaLink raleway"
+                    v-for="(item, i) in items"
+                    :key="i"
+                    :href="item.url"
+                >
+                    <v-list-item
+                        :class="{ 'active-sidebar':$page.url === (getPath(item.url)) }"
+                    >
+                        <template v-slot:prepend>
+                            <v-icon :icon="item.icon"></v-icon>
+                        </template>
+
+                        <v-list-item-title class="raleway" v-text="item.text"></v-list-item-title>
+                    </v-list-item>
+                </InertiaLink>
+
+            </v-list>
+            
         </v-navigation-drawer>
 
-        <v-app-bar elevation="0">
+        <v-app-bar elevation="0" class="glass-shadow">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-app-bar-title>Application</v-app-bar-title>
             <v-btn
