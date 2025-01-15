@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-    
+
 <div class="glass pa-3">
     <v-toolbar class="rounded-lg px-2 mb-5" density="comfortable">
         <v-toolbar-title>
@@ -10,12 +10,12 @@
         <v-btn v-if="!dialog" @click="dialog = true" variant="flat">
             Add Category
         </v-btn>
-        
+
         <v-btn v-else @click="dialog = false" variant="flat">
             Back to Category
         </v-btn>
     </v-toolbar>
-    
+
     <div max-width="700" v-if="dialog">
         <v-card variant="flat">
             <v-card-title class="mb-5">
@@ -29,7 +29,7 @@
                                     label="Category Name"
                                     prepend-inner-icon="mdi-account"
                                     :rules="[rules.required]"
-                                    :error-messages="form.errors.first_name"
+                                    :error-messages="form.errors.name"
                                 />
                             </v-col>
                             <v-col cols="12" md="6">
@@ -38,13 +38,17 @@
                                     label="Enter slug "
                                     prepend-inner-icon="mdi-account"
                                     :rules="[rules.required]"
-                                    :error-messages="form.errors.last_name"
+                                    :error-messages="form.errors.slug"
                                 />
                             </v-col>
                         </v-row>
                         <v-row class="mt-n3">
                             <v-col cols="12" md="6">
-                                
+                                <v-file-input
+                                    v-model="form.preview_image"
+                                    label="  logo Image"
+                                    prepend-icon=""
+                                />
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-text-field
@@ -77,7 +81,7 @@
                                 />
                             </v-col>
                         </v-card-text>
-                            
+
                             <v-card-actions class="mt-n5">
                                 <v-btn
                                 class="mx-1"
@@ -87,7 +91,7 @@
                                 >
                                 Cancel
                             </v-btn>
-                            
+
                             <v-btn
                             variant="flat"
                             class="mx-1"
@@ -100,7 +104,7 @@
                     </v-card-actions>
                 </v-card>
             </div>
-            
+
             <v-data-table
             v-else
             :items="$page.props.categories"
@@ -111,11 +115,11 @@
                     <v-btn class="mx-1" color="success" @click="showCategory(item)">
                         View
                     </v-btn>
-                    
+
                     <v-btn class="mx-1" @click="editCategory(item)">
                         Edit
                     </v-btn>
-                    
+
                     <v-btn color="error" class="mx-1" @click="deleteCategory(item)">
                         <v-icon>mdi-trash-can</v-icon>
                     </v-btn>
@@ -123,11 +127,11 @@
             </template>
         </v-data-table>
     </div>
-    
 
-  
+
+
 </AppLayout>
-   
+
 </template>
 
 <script>
@@ -152,7 +156,7 @@ export default {
             headers: [
                 { title: 'ID', key: 'id' },
                 { title: 'Category Name', key: 'name' },
-                { title: 'Enter slug', key: 'slug' },
+                { title: 'Slug', key: 'slug' },
                 { title: 'Description', key: 'description' },
                 // { title: 'Phone Number', key: 'phone_number' },
                  { title: 'Actions', key: 'actions', sortable: false },
@@ -184,7 +188,7 @@ export default {
             this.form.reset();
         },
 
-       
+
         editCategory(category) {
             this.form.id = category.id;
             this.form.name = category.name;
@@ -193,7 +197,7 @@ export default {
             this.form.description = category.description;
             this.form.gender = category.gender;
             this.form.sizes = category.sizes;
-            
+
             this.dialog = true;
         },
         deleteCategory(category) {
@@ -212,7 +216,7 @@ export default {
             });
         },
 
-       
+
     },
 };
 </script>

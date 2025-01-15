@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id');
-            $table->foreignId('category_id');
+//            $table->foreignId('client_id');
+//            $table->foreignId('category_id');
             $table->integer('quantity');
             $table->string('logo_image')->nullable();
             $table->string('front_text')->nullable();
