@@ -9,10 +9,10 @@ use Inertia\inertia;
 class OrderController extends Controller
 {
     public function index(){
-        $orders =Order::all();
-        return Inertia('Admin/CreateOrder',[
-            'orders'=>$orders
-            ]    );
+
+        return Inertia('Admin/Orders/AllOrders',[
+            'orders'=>Order::all()
+        ]);
 
 
     }

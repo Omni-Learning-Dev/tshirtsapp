@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -13,11 +15,10 @@ class CategoryController extends Controller
             'categories' => $categories
         ]);
     }
-    
+
     public function store(Request $request){
         $request->validate([
             'name'=>'required',
-            'slug'=>'required',
             'preview_image'=>'required',
             'description'=>'required',
             'gender'=>'required',
@@ -32,9 +33,16 @@ class CategoryController extends Controller
             $category = new Category;
         }
 
+
+        if(is_file($request->preview_image)){
+            $path = $this->uploadFile($request->preview_image,'/storage/categories/');
+        }else{
+            $path = $request->preview_image;
+        }
+
         $category->name                     = $request->name;
-        $category->slug                     = $request->slug;
-        $category->preview_image            = $request->preview_image;
+        $category->slug                     = Str::slug($request->name);
+        $category->preview_image            = $path;
         $category->description              = $request->description;
         $category->gender                   = $request->gender;
         $category->sizes                    = $request->sizes;
@@ -48,30 +56,26 @@ class CategoryController extends Controller
 
 
         }
-        
-        public function show(Category $category){
 
 
-        }
-        
         public function edit($id){
             $category = Category::findOrfail($id);
             return Inertia::render('CategoryEdit',[
                 'category' => $category,
             ]);
-        
+
         }
-        
+
         public function destroy($id){
             $category = Category::find($id);
             $category->delete();
-            
+
             return back()->with('message',[
                 'type' =>'success',
                 'title' =>'categgory Deleted'
             ]);
         }
 
-        
-    
+
+
     }

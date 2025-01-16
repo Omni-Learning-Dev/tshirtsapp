@@ -1,30 +1,27 @@
 <template>
   <v-app id="inspire">
     <!-- App Bar -->
-    <v-app-bar class=" " elevation="0" app>
+    <v-app-bar elevation="2" app>
         <InertiaLink class="InertiaLink" :href="route('welcome')">
             <img height="50px" class="ml-2" src="/images/logo-main.png" alt="Capital Creatives Logo">
         </InertiaLink>
       <v-spacer></v-spacer>
-      <InertiaLink class="InertiaLinkMenu mx-1" :href="route('login')">
-        <v-btn variant="text" color="primary">
-          Login
-        </v-btn>
-      </InertiaLink>
-
-
-      <InertiaLink class="InertiaLinkMenu mx-1" :href="route('welcome')">
+        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('welcome')">
         <v-btn variant="text" color="primary">
           Home
         </v-btn>
       </InertiaLink>
-
-
-      <InertiaLink class="InertiaLinkMenu mx-1" :href="route('Contact')">
+        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('Contact')">
         <v-btn variant="text" color="primary" >
           Contact
         </v-btn>
       </InertiaLink>
+        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('login')">
+            <v-btn variant="flat" class="mr-3" rounded color="primary">
+                <span v-if="$page.props.auth.user">My Dashboard</span>
+                <span v-else>Login</span>
+            </v-btn>
+        </InertiaLink>
     </v-app-bar>
 
     <!-- Main Content -->

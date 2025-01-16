@@ -17,13 +17,8 @@ return new class extends Migration
             $table->string('slug');
             $table->string('preview_image')->nullable();
             $table->text('description')->nullable();
-            // Gender column as enum
-            $table->enum('gender', ['men', 'women', 'unisex', 'kids']);
-            // Sizes column as enum
-            $table->enum('sizes', [
-                'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL', '5XL',
-                '2T', '3T', '4T', '6-7', '8-10', '10-12', '12-14',
-            ])->nullable();
+            $table->string('gender')->nullable();
+            $table->string('sizes')->nullable();
 
             $table->timestamps();
         });

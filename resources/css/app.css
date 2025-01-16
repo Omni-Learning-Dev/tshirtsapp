@@ -29,3 +29,17 @@
 .v-btn {
     text-transform: unset !important;
 }
+
+.active-sidebar{
+    background-color: #0072ab !important;
+    color: white !important;
+}
+
+.swal2-actions button{
+    color: white !important;
+}
+
+.userinfo i{
+    font-size: 40px !important;
+    margin-left: 10 !important;
+}
