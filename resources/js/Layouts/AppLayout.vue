@@ -96,6 +96,9 @@ export default {
         <v-app-bar color="primary">
 
             <v-app-bar-title>Capital Creative</v-app-bar-title>
+            <v-btn href="/" color="white" variant="outlined" rounded class="mr-2">
+                Website
+            </v-btn>
             <v-btn color="white" variant="outlined" rounded class="mr-2">
                 <v-icon icon="mdi-account-circle" class="mr-1" />
                 {{ $page.props.auth.user.name }}

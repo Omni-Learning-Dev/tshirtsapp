@@ -1,27 +1,31 @@
 <template>
   <v-app id="inspire">
     <!-- App Bar -->
-    <v-app-bar elevation="2" app>
+    <v-app-bar elevation="0" app>
         <InertiaLink class="InertiaLink" :href="route('welcome')">
-            <img height="50px" class="ml-2" src="/images/logo-main.png" alt="Capital Creatives Logo">
+            <img height="40px" class="ml-2" src="/images/logo-main.png" alt="Capital Creatives Logo">
         </InertiaLink>
       <v-spacer></v-spacer>
-        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('welcome')">
+        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('welcome')">
         <v-btn variant="text" color="primary">
           Home
         </v-btn>
       </InertiaLink>
-        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('Contact')">
+        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('Contact')">
         <v-btn variant="text" color="primary" >
           Contact
         </v-btn>
       </InertiaLink>
-        <InertiaLink class="InertiaLinkMenu mx-1" :href="route('login')">
+        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('login')">
             <v-btn variant="flat" class="mr-3" rounded color="primary">
                 <span v-if="$page.props.auth.user">My Dashboard</span>
                 <span v-else>Login</span>
             </v-btn>
         </InertiaLink>
+
+        <v-btn v-if="$vuetify.display.smAndDown">
+                <v-icon size="30">mdi-menu</v-icon>
+        </v-btn>
     </v-app-bar>
 
     <!-- Main Content -->
