@@ -28,8 +28,7 @@ const submit = () => {
 
      <Default>
          <form @submit.prevent="submit">
-            <v-card class="glass mx-auto" max-width="600">
-
+            <v-card class="mx-auto my-15" variant="outlined" color="primary" max-width="600">
                 <v-card-text>
                     <h1>Login</h1>
                 </v-card-text>
@@ -42,7 +41,8 @@ const submit = () => {
                             required
                             autofocus
                             autocomplete="username"
-                            :error-message="form.errors.email"
+                            :error-messages="form.errors.email"
+                            class="mb-3"
                         />
 
                         <v-text-field
