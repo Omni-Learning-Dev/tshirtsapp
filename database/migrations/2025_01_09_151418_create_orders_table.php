@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-//            $table->foreignId('client_id');
-//            $table->foreignId('category_id');
+            $table->foreignId('client_id');
+            $table->foreignId('category_id');
             $table->integer('quantity');
             $table->string('logo_image')->nullable();
             $table->string('front_text')->nullable();
@@ -24,10 +24,24 @@ return new class extends Migration
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->enum('gender', ['men', 'women', 'unisex', 'kids']);
             $table->enum('size', [
-                'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL', '5XL',
-                '2T', '3T', '4T', '6-7', '8-10', '10-12', '12-14',
+                'XS',
+                'S',
+                'M',
+                'L',
+                'XL',
+                'XXL',
+                '3XL',
+                '4XL',
+                '5XL',
+                '2T',
+                '3T',
+                '4T',
+                '6-7',
+                '8-10',
+                '10-12',
+                '12-14',
             ])->nullable();
-            $table->timestamps(); // Timestamps
+            $table->timestamps();
         });
     }
 

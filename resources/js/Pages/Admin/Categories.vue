@@ -2,20 +2,20 @@
     <AppLayout>
         <div class="glass pa-3">
             <v-toolbar class="rounded-lg px-2 mb-5" density="comfortable">
-        <v-toolbar-title>
-            All Categories
-        </v-toolbar-title>
-        <v-spacer />
-        <v-btn v-if="!dialog" @click="dialog = true" variant="flat">
-            Add Category
-        </v-btn>
+                <v-toolbar-title>
+                    All Categories
+                </v-toolbar-title>
+                <v-spacer />
+                <v-btn v-if="!dialog" @click="dialog = true" variant="flat">
+                    Add Category
+                </v-btn>
 
-        <v-btn v-else @click="dialog = false" variant="flat">
-            Back to Category
-        </v-btn>
-    </v-toolbar>
+                <v-btn v-else @click="dialog = false" variant="flat">
+                    Back to Category
+                </v-btn>
+            </v-toolbar>
 
-            <div max-width="700" v-if="dialog">
+                    <div max-width="700" v-if="dialog">
                 <v-card variant="flat">
                     <v-card-title class="mb-5">
                         Category Form
