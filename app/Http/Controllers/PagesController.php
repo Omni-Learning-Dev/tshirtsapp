@@ -16,6 +16,14 @@ class PagesController extends Controller
         ]);
     }
 
+    public function order($slug)
+    {
+        $category = Category::where('slug',$slug)->first();
+        return Inertia::render('MakeOrder',[
+            'category' => $category,
+        ]);
+    }
+
 
     public function contact()
     {
