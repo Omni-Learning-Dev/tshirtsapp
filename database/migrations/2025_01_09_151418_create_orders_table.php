@@ -22,25 +22,9 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
-            $table->enum('gender', ['men', 'women', 'unisex', 'kids']);
-            $table->enum('size', [
-                'XS',
-                'S',
-                'M',
-                'L',
-                'XL',
-                'XXL',
-                '3XL',
-                '4XL',
-                '5XL',
-                '2T',
-                '3T',
-                '4T',
-                '6-7',
-                '8-10',
-                '10-12',
-                '12-14',
-            ])->nullable();
+            $table->string('gender');
+            $table->string('size');
+            $table->mediumText('notes')->nullable();
             $table->timestamps();
         });
     }

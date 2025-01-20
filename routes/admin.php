@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PriceController;
 
 
 Route::group([
@@ -21,4 +22,5 @@ Route::group([
     Route::resource('products', ProductController::class);
     Route::resource('clients', ClientController::class);
     Route::resource('enquiries', EnquiryController::class);
+    Route::resource('prices', PriceController::class);
 });

@@ -39,7 +39,7 @@ export default {
     data() {
         return {
             drawer: true,
-            rail: true,
+            rail: false,
             items: [
                 {
                     text: "Dashboard",
@@ -55,6 +55,11 @@ export default {
                     text: "Categories",
                     icon: "mdi-tag-multiple",
                     url: route("admin.categories.index"),
+                },
+                {
+                    text: "Prices",
+                    icon: "mdi-currency-usd",
+                    url: route("admin.prices.index"),
                 },
                 {
                     text: "Products",
@@ -95,7 +100,7 @@ export default {
     <v-app id="inspire">
         <v-app-bar color="primary">
 
-            <v-app-bar-title>Capital Creative</v-app-bar-title>
+            <v-app-bar-title> <v-icon @click="rail = !rail ">mdi-menu</v-icon> Capital Creative</v-app-bar-title>
             <v-btn href="/" color="white" variant="outlined" rounded class="mr-2">
                 Website
             </v-btn>

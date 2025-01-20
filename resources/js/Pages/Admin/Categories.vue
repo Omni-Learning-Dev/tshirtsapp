@@ -166,7 +166,6 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 
-import {router} from "@inertiajs/vue3";
 export default {
     components: {AppLayout},
     data() {
