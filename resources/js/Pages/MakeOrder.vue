@@ -7,14 +7,15 @@
                 </v-toolbar-title>
             </v-toolbar>
             <v-row>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="5">
+
                     <v-img
                         :src="$page.props.category.preview_image"
                         height="350"
                         contain
                     />
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="7">
                     <v-form @submit.prevent="submitOrder">
                         <v-card class="pa-4">
                             <v-card-title>Place Your Order</v-card-title>
@@ -44,7 +45,18 @@
                                             required
                                         />
                                     </v-col>
-
+                                    <v-col cols="12">
+                                        <v-select
+                                            v-model="form.gender"
+                                            label="Gender"
+                                            chips
+                                            closable-chips
+                                            :items="['men', 'women', 'unisex', 'kids']"
+                                            variant="outlined"
+                                            :error-messages="$page.props.errors?.gender"
+                                            required
+                                        />
+                                    </v-col>
                                     <v-col cols="6">
                                         <v-file-input
                                             v-model="form.logo_image"
@@ -85,23 +97,20 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12">
-                                        <v-select
-                                            v-model="form.gender"
-                                            label="Gender"
-                                            chips
-                                            closable-chips
-                                            :items="['men', 'women', 'unisex', 'kids']"
-                                            variant="outlined"
-                                            :error-messages="$page.props.errors?.gender"
-                                            required
-                                        />
-                                    </v-col>
+
                                 </v-row>
                             </v-card-text>
 
                             <v-card-actions>
                                 <v-spacer />
+                                <v-btn
+                                    color="primary"
+                                    type="submit"
+                                    variant="flat"
+                                    size="large"
+                                >
+                                    Add to Cart
+                                </v-btn>
                                 <v-btn
                                     color="primary"
                                     type="submit"
@@ -122,9 +131,11 @@
 
 <script>
 import Default from "@/Layouts/Default.vue";
+import Model from '@/Layouts/Model.vue';
 
 export default {
     components:{
+        Model,
         Default
     },
 

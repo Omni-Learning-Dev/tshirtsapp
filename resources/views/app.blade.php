@@ -13,5 +13,9 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <script src="/js/three.min2.js"></script>
+        <script src="/js/LoaderSupport.js"></script>
+        <script src="/js/OBJLoader2.js"></script>
+        <script src="/js/OrbitControls.js"></script>
     </body>
 </html>

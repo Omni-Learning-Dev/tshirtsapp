@@ -18,6 +18,7 @@
         "vuetify": "^3.6.14"
     },
     "dependencies": {
+        "three": "^0.137.5",
         "@mdi/font": "^7.4.47",
         "sweetalert2": "^11.15.10",
         "vue-sweetalert2": "^5.0.11"
