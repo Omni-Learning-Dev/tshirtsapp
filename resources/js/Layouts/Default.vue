@@ -1,47 +1,45 @@
 <template>
-  <v-app id="inspire">
-    <!-- App Bar -->
-    <v-app-bar elevation="0" app>
-        <InertiaLink class="InertiaLink" :href="route('welcome')">
-            <img height="40px" class="ml-2" src="/images/logo-main.png" alt="Capital Creatives Logo">
-        </InertiaLink>
-      <v-spacer></v-spacer>
-        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('welcome')">
-        <v-btn variant="text" color="primary">
-          Home
-        </v-btn>
-      </InertiaLink>
-        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('Contact')">
-        <v-btn variant="text" color="primary" >
-          Contact
-        </v-btn>
-      </InertiaLink>
-        <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu mx-1" :href="route('login')">
-            <v-btn variant="flat" class="mr-3" rounded color="primary">
+    <v-app id="inspire">
+        <!-- App Bar -->
+        <v-app-bar elevation="0" color="black" class="pr-5">
+            <InertiaLink class="InertiaLink" :href="route('welcome')">
+                <img height="40px" class="ml-2" src="/images/logo-main-white.png" alt="Capital Creatives Logo" />
+            </InertiaLink>
+            <v-spacer></v-spacer>
+            <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu bebas-neue-regular mx-5" :href="route('welcome')"> Home </InertiaLink>
+            <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu bebas-neue-regular mx-5" :href="route('welcome')"> About </InertiaLink>
+            <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu bebas-neue-regular mx-5" :href="route('welcome')"> How it Works </InertiaLink>
+            <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu bebas-neue-regular mx-5" :href="route('Contact')"> Contact Us</InertiaLink>
+
+            <InertiaLink v-if="$vuetify.display.smAndUp" class="InertiaLinkMenu bebas-neue-regular mx-5" :href="route('login')">
                 <span v-if="$page.props.auth.user">My Dashboard</span>
                 <span v-else>Login</span>
-            </v-btn>
-        </InertiaLink>
+            </InertiaLink>
 
-        <v-btn v-if="$vuetify.display.smAndDown">
+            <v-btn v-if="$vuetify.display.smAndDown">
                 <v-icon size="30">mdi-menu</v-icon>
-        </v-btn>
-    </v-app-bar>
+            </v-btn>
+        </v-app-bar>
 
-    <!-- Main Content -->
-    <v-main>
-        <slot />
-    </v-main>
-      <FooterBar/>
-  </v-app>
+        <!-- Main Content -->
+        <v-main>
+            <slot />
+        </v-main>
+        <FooterBar />
+    </v-app>
 </template>
 
 <script setup lang="ts">
-import FooterBar from "./FooterBar.vue";
+import FooterBar from './FooterBar.vue';
 </script>
 
 <style scoped>
-.InertiaLinkMenu{
-
+.InertiaLinkMenu {
+    color: #f7c54a;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 </style>

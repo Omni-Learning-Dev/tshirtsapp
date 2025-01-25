@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Adminstrator',
             'email' => 'admin@capital.creative',
             'role'  => 'admin',
-            'password'=> Hash::make('Pp#ssw@rd54'),
+            'password' => Hash::make('Pp#ssw@rd54'),
         ]);
 
         $categories = [
@@ -36,12 +36,20 @@ class DatabaseSeeder extends Seeder
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
             [
-                'name' => 'Golf Shirts',
-                'slug' => Str::slug('Golf Shirts'),
-                'preview_image' => '/categories/golf_shirts.png',
-                'description' => 'Premium quality golf shirts for corporate and casual wear.',
-                'gender' => json_encode(['men', 'women']),
+                'name' => 'Vest',
+                'slug' => Str::slug('vest'),
+                'preview_image' => '/categories/vest.png',
+                'description' => 'Branded jackets for outdoor and casual wear.',
+                'gender' => json_encode(['men', 'women', 'unisex']),
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
+            ],
+            [
+                'name' => 'Cap',
+                'slug' => Str::slug('Caps'),
+                'preview_image' => '/categories/caps.png',
+                'description' => 'Custom-branded caps for events and promotions.',
+                'gender' => json_encode(['unisex']),
+                'sizes' => json_encode(['One Size']),
             ],
             [
                 'name' => 'Hoodies',
@@ -51,26 +59,20 @@ class DatabaseSeeder extends Seeder
                 'gender' => json_encode(['men', 'women', 'unisex']),
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
+
             [
-                'name' => 'Caps',
-                'slug' => Str::slug('Caps'),
-                'preview_image' => '/categories/caps.png',
-                'description' => 'Custom-branded caps for events and promotions.',
-                'gender' => json_encode(['unisex']),
-                'sizes' => json_encode(['One Size']),
-            ],
-            [
-                'name' => 'Jackets',
-                'slug' => Str::slug('Jackets'),
-                'preview_image' => '/categories/jackets.png',
-                'description' => 'Branded jackets for outdoor and casual wear.',
-                'gender' => json_encode(['men', 'women', 'unisex']),
+                'name' => 'Golf T-Shirts',
+                'slug' => Str::slug('Golf T-Shirts'),
+                'preview_image' => '/categories/polos.png',
+                'description' => 'Premium quality golf shirts for corporate and casual wear.',
+                'gender' => json_encode(['men', 'women']),
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
+
             [
-                'name' => 'Polos',
-                'slug' => Str::slug('Polos'),
-                'preview_image' => '/categories/polos.png',
+                'name' => 'Jacket',
+                'slug' => Str::slug('Jacket'),
+                'preview_image' => '/categories/jackets.png',
                 'description' => 'Classic polos for a professional look with customization.',
                 'gender' => json_encode(['men', 'women']),
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
@@ -79,6 +81,5 @@ class DatabaseSeeder extends Seeder
 
         // Insert categories into the database
         DB::table('categories')->insert($categories);
-
     }
 }

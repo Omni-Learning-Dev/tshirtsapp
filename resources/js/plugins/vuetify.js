@@ -2,53 +2,49 @@ import { createVuetify  } from 'vuetify'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.min.css'
 export default createVuetify({
-
-
     theme: {
         themes: {
             light: {
                 colors: {
-                    accent: "#dadada",
-                    surface: "#fafafa",
-                    primary: "#0072ab",
-                    error: "#c20d0d",
-                    success: "#41a748",
+                    accent: '#F7C54A',
+                    surface: '#fafafa',
+                    primary: '#023459',
+                    error: '#c20d0d',
+                    success: '#41a748',
                 },
             },
         },
     },
     defaults: {
         VCard: {
-            rounded: 'lg'
+            rounded: 'lg',
         },
 
         VTextField: {
             variant: 'outlined',
             density: 'comfortable',
-            color: 'primary'
+            color: 'primary',
         },
 
         VTextarea: {
             variant: 'outlined',
             density: 'comfortable',
-            color: 'primary'
+            color: 'primary',
         },
 
         VSelect: {
             variant: 'outlined',
             density: 'comfortable',
-            color: 'primary'
+            color: 'primary',
         },
 
-      
         VTooltip: {
-            location: 'top'
+            location: 'top',
         },
 
         VBtn: {
-            variant:'flat',
-            color:'primary'
-        }
-    }
-
-})
+            variant: 'flat',
+            color: 'primary',
+        },
+    },
+});

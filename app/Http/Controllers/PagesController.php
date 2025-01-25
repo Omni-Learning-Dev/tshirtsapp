@@ -9,20 +9,21 @@ use Inertia\Inertia;
 use App\Models\Category;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+
 class PagesController extends Controller
 {
     public function welcome()
     {
-        $categories = Category::orderBy('name','DESC')->get();
-        return Inertia::render('Welcome',[
+        $categories = Category::orderBy('name', 'ASC')->get();
+        return Inertia::render('Welcome', [
             'categories' => $categories,
         ]);
     }
 
     public function order($slug)
     {
-        $category = Category::where('slug',$slug)->first();
-        return Inertia::render('MakeOrder',[
+        $category = Category::where('slug', $slug)->first();
+        return Inertia::render('MakeOrder', [
             'category' => $category,
         ]);
     }
@@ -42,13 +43,13 @@ class PagesController extends Controller
 
         // Handle the uploaded logo image
         if ($request->hasFile('logo_image')) {
-           $path =  $this->uploadFile($request->logo_image,'/storage/orders/logos/');
-        }else{
+            $path =  $this->uploadFile($request->logo_image, '/storage/orders/logos/');
+        } else {
 
             $path = $request->logo_image;
         }
 
-       // dd($request->all());
+        // dd($request->all());
 
         $order = new Order();
         $order->client_id   = 1;
@@ -67,7 +68,7 @@ class PagesController extends Controller
         // Send email notification
         Mail::to('emmanuel@omni-learning.com')->send(new \App\Mail\OrderPlaced($order));
 
-        return back()->with('message',[
+        return back()->with('message', [
             'type' => 'success',
             'description' => 'Category details added successfully',
         ]);
