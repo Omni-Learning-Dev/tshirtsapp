@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Models\Client;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,57 +23,84 @@ class PagesController extends Controller
 
     public function order($slug)
     {
-        $category = Category::where('slug', $slug)->first();
+        $category = Category::where('slug', $slug)->with('prices')->first();
         return Inertia::render('MakeOrder', [
             'category' => $category,
+            'clients'  => Client::all()
         ]);
     }
 
-    public function sendOrder(Request $request)
-    {
-        // Validate the incoming request
-        $validated = $request->validate([
-            'quantity'     => 'required|integer|min:1',
-            'logo_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'front_text' => 'nullable|string|max:255',
-            'back_text' => 'nullable|string|max:255',
-            'category_id' => 'nullable',
-            'size' => 'required', // Ensure 'size' is an array
-            'gender' => 'required', // Ensure 'gender' is an array
-        ]);
+  public function sendOrder(Request $request)
+{
+    // Validate the request
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'phone' => 'required|string|unique:clients,phone',
+        'email' => 'nullable|email',
+        'address' => 'nullable|string',
+        'gender' => 'nullable|in:male,female,other',
+        'date_of_birth' => 'nullable|date',
+        'company_name' => 'nullable|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'logo_image' => 'nullable|image',
+        'front_text' => 'nullable|string',
+        'back_text' => 'nullable|string',
+        'notes' => 'nullable|string',
+        'sizes' => 'required|array',
+        'sizes.*.size' => 'required|string',
+        'sizes.*.quantity' => 'required|integer|min:1',
+        'sizes.*.gender' => 'nullable|string',
+    ]);
 
-        // Handle the uploaded logo image
-        if ($request->hasFile('logo_image')) {
-            $path =  $this->uploadFile($request->logo_image, '/storage/orders/logos/');
-        } else {
+    // Step 1: Save or fetch the client
+    $client = \App\Models\Client::firstOrCreate(
+        ['phone' => $validatedData['phone']],
+        [
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'] ?? null,
+            'address' => $validatedData['address'] ?? null,
+            'gender' => $validatedData['gender'] ?? null,
+            'date_of_birth' => $validatedData['date_of_birth'] ?? null,
+            'company_name' => $validatedData['company_name'] ?? null,
+        ]
+    );
 
-            $path = $request->logo_image;
-        }
+    // Step 2: Save the order
+    $orderData = [
+        'client_id' => $client->id,
+        'category_id' => $validatedData['category_id'],
+        'logo_image' => $request->file('logo_image') 
+            ? $request->file('logo_image')->store('logos', 'public') 
+            : null,
+        'front_text' => $validatedData['front_text'] ?? null,
+        'back_text' => $validatedData['back_text'] ?? null,
+        'notes' => $validatedData['notes'] ?? null,
+        'status' => 'pending',
+        'payment_status' => 'unpaid',
+    ];
 
-        // dd($request->all());
+    $order = \App\Models\Order::create($orderData);
 
-        $order = new Order();
-        $order->client_id   = 1;
-        $order->total_price = 100;
-        $order->category_id = $request->category_id;
-        $order->quantity    = $request->quantity;
-        $order->size        = $request->size;
-        $order->logo_image  = $path;
-        $order->front_text  = $request->front_text;
-        $order->back_text   = $request->back_text;
-        $order->gender      = $request->gender;
-        $order->notes       = $request->notes;
-
-        $order->save();
-
-        // Send email notification
-        Mail::to('emmanuel@omni-learning.com')->send(new \App\Mail\OrderPlaced($order));
-
-        return back()->with('message', [
-            'type' => 'success',
-            'description' => 'Category details added successfully',
+    // Step 3: Add quantities to the order
+    foreach ($validatedData['sizes'] as $size) {
+        \App\Models\Quantity::create([
+            'order_id' => $order->id,
+            'size' => $size['size'],
+            'quantity' => $size['quantity'],
+            'gender' => $size['gender'] ?? null,
         ]);
     }
+
+    // Step 4: Send email notification
+    Mail::to('emmanuel@omni-learning.com')->send(new \App\Mail\OrderPlaced($order));
+
+    // Return success response
+    return back()->with('message', [
+        'type' => 'success',
+        'description' => 'Order placed successfully!',
+    ]);
+}
+
 
 
     public function contact()

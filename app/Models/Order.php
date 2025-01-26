@@ -18,4 +18,8 @@ class Order extends Model
         'status',
         'payment_status',
     ];
+
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
 }

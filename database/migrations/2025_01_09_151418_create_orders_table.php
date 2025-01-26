@@ -13,17 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id');
+            $table->foreignId('client_id')->nullable();
             $table->foreignId('category_id');
-            $table->integer('quantity');
             $table->string('logo_image')->nullable();
             $table->string('front_text')->nullable();
             $table->string('back_text')->nullable();
-            $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
-            $table->string('gender');
-            $table->string('size');
             $table->mediumText('notes')->nullable();
             $table->timestamps();
         });

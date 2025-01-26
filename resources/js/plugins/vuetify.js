@@ -45,6 +45,8 @@ export default createVuetify({
         VBtn: {
             variant: 'flat',
             color: 'primary',
+            rounded:true,
+            size:'large'
         },
     },
 });
