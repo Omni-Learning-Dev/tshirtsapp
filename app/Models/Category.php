@@ -24,4 +24,9 @@ class Category extends Model
   public function prices(){
     return $this->hasMany(Price::class);
   }
+
+  public function order()
+  {
+      return $this->hasMany(Order::class);
+  }
 }

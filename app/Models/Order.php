@@ -22,4 +22,13 @@ class Order extends Model
     public function client(){
         return $this->belongsTo(Client::class);
     }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+
+    public function quantities()
+    {
+        return $this->hasMany(Quantity::class);
+    }
 }

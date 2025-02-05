@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('logo_image')->nullable();
             $table->string('front_text')->nullable();
             $table->string('back_text')->nullable();
-            $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
+            $table->enum('status', ['initiated','pending', 'completed', 'canceled'])->default('initiated');
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->mediumText('notes')->nullable();
             $table->timestamps();
