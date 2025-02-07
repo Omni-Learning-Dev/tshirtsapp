@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c77f2b43a73a615ba7e23d4c16abd53b",
+    "content-hash": "9e54e951b0ad74f2f51920b325ed6e5d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -616,16 +616,16 @@
         },
         {
             "name": "emmanuelsiziba/pesepay",
-            "version": "1.0.1",
+            "version": "2.1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SyzbaLinux/pesepay-php.git",
-                "reference": "869d0a6b4a6fbb0d777faa2653a304d3dc70aa22"
+                "reference": "fe42887cc139ffff79e98b852b1c0de026a18db1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SyzbaLinux/pesepay-php/zipball/869d0a6b4a6fbb0d777faa2653a304d3dc70aa22",
-                "reference": "869d0a6b4a6fbb0d777faa2653a304d3dc70aa22",
+                "url": "https://api.github.com/repos/SyzbaLinux/pesepay-php/zipball/fe42887cc139ffff79e98b852b1c0de026a18db1",
+                "reference": "fe42887cc139ffff79e98b852b1c0de026a18db1",
                 "shasum": ""
             },
             "require": {
@@ -637,7 +637,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Codevirtus\\Payments\\": "src/"
+                    "Emmanuelsiziba\\Payments\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -646,26 +646,23 @@
             ],
             "authors": [
                 {
-                    "name": "Sean P. T. Huvaya",
-                    "email": "developer@codevirtus.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Michael T. Tsuro",
-                    "email": "developer@codevirtus.com",
+                    "name": "Emmanuel Siziba",
+                    "email": "emmasiziba@gmail.com",
                     "role": "Developer"
                 }
             ],
-            "description": "Pesepay online payment integration package",
-            "homepage": "https://github.com/codevirtus/pesepay",
+            "description": "Pesepay online payment integration package for seamless payment processing.",
+            "homepage": "https://github.com/SyzbaLinux/pesepay-php",
             "keywords": [
-                "codevirtus",
+                "emmanuel siziba",
+                "integration",
+                "payment",
                 "pesepay"
             ],
             "support": {
-                "source": "https://github.com/SyzbaLinux/pesepay-php/tree/1.0.1"
+                "source": "https://github.com/SyzbaLinux/pesepay-php/tree/2.1.1.0"
             },
-            "time": "2021-10-22T10:10:10+00:00"
+            "time": "2025-02-02T12:54:16+00:00"
         },
         {
             "name": "fruitcake/php-cors",
