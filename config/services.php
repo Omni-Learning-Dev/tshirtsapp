@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'pesepay' => [
+        'int_key'         => env('INTEGRATION_KEY'),
+        'ency_key'        => env('ENCRYPTION_KEY'),
+    ],
+
 ];

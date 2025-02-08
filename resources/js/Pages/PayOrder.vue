@@ -25,7 +25,7 @@
                                         <th class="text-left">Unit price</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">USD Price</th>
-                                        <th class="text-left">RTGS Price</th>
+                                        <!-- <th class="text-left">RTGS Price</th> -->
                                         <th class="text-left">Options</th>
                                     </tr>
                                     </thead>
@@ -34,8 +34,8 @@
                                         <td>{{ size.size }}</td>
                                         <td>$ {{ getPriceForSize(size.size, 'usd') }}</td>
                                         <td>{{ size.quantity }} </td>
-                                        <td>{{ getPriceForSize(size.size, 'usd') * size.quantity }}</td>
-                                        <td>{{ getPriceForSize(size.size, 'rtgs') * size.quantity }}</td>
+                                        <td>$ {{ getPriceForSize(size.size, 'usd') * size.quantity }}</td>
+                                        <!-- <td>{{ getPriceForSize(size.size, 'rtgs') * size.quantity }}</td> -->
                                         <td>
                                             <v-btn color="error" @click="removeSize(size.id)">
                                                 <v-icon>mdi-trash-can</v-icon>
@@ -46,9 +46,9 @@
                                     <tr>
                                         <td><strong>Totals</strong></td>
                                         <td><strong> </strong></td>
-                                        <td><strong>{{ totalQuantities }}</strong></td>
-                                        <td><strong>{{ totalUSD }}</strong></td>
-                                        <td><strong>{{ totalRTGS }}</strong></td>
+                                        <td><strong>{{ totalQuantities }} Items</strong></td>
+                                        <td><strong>$ {{ totalUSD.toFixed(2) }}</strong></td>
+                                        <!-- <td><strong>{{ totalRTGS }}</strong></td> -->
                                         <td></td>
                                     </tr>
                                     </tbody>
@@ -62,14 +62,41 @@
                 <v-col cols="12" sm="6">
                     <!-- Add payment or additional details here -->
                     <v-card>
+                      <v-form v-model="valid" @submit.prevent="MakePayment">
                         <v-card-text>
                             <h1>Payment Details</h1>
-                            <!-- Add payment form or details here -->
+                            <v-text-field
+                                class="mt-3"
+                                label="Your phone number"
+                                v-model="form.customerPhoneNumber"
+                                :rules="rules.customerPhoneNumber"
+                            />
+
+                            <v-btn :loading="btnloading"  :disabled="!valid"  block class="mt-5" type="submit">
+                                Pay Order
+                            </v-btn>
                         </v-card-text>
+                      </v-form>
                     </v-card>
                 </v-col>
             </v-row>
         </v-card>
+
+
+          <div >
+            <v-overlay class="border d-flex align-center justify-center" v-model="loading">
+                <v-card variant="flat" width="500" >
+                    <v-card-text>
+                        <div class="text-center">
+                            <p v-html="loaderMessage"></p>
+                            <v-progress-circular color="primary" indeterminate size="64">
+                                {{ retries }}
+                            </v-progress-circular>
+                        </div>
+                    </v-card-text>
+                </v-card>
+            </v-overlay>
+        </div>
     </v-container>
 </template>
 
@@ -78,6 +105,34 @@ import Default from '@/Layouts/Default.vue';
 
 export default {
     layout: Default,
+
+    data(){
+            return {
+
+                form:this.$inertia.form({
+                    amount:null,
+                    order_id:this.$page.props.order.id,
+                    client_id:this.$page.props.order.client_id,
+                    customerPhoneNumber:'0771049950',
+                    reason:'payment for order no '+this.$page.props.order.id
+                }),
+
+                btnloading:false,
+                valid: true,
+                loading: false,
+
+                loaderMessage: "",
+                retries:10,
+
+                rules: {
+                customerPhoneNumber: [
+                    v => !!v || 'Phone is required',
+                    v => (v ? v.length === 10 : false) || 'Phone number must have 10 characters',
+                    v => /07[1,8,7]\d{7}/.test(v) || "Please enter a valid Econet or OneMoney number"
+                ],
+            },
+            }
+    },
 
     computed: {
         // Calculate total quantities
@@ -88,6 +143,7 @@ export default {
         // Calculate total USD price
         totalUSD() {
             return this.$page.props.order.quantities.reduce((total, size) => {
+                this.form.amount =  total + this.getPriceForSize(size.size, 'usd') * size.quantity;
                 return total + this.getPriceForSize(size.size, 'usd') * size.quantity;
             }, 0);
         },
@@ -106,6 +162,80 @@ export default {
             const priceEntry = this.$page.props.prices.find(price => price.size === size);
             if (!priceEntry) return 0;
             return currency === 'usd' ? priceEntry.usd_price : priceEntry.rtgs_price;
+        },
+
+        async MakePayment(){
+            if(this.form.customerPhoneNumber.length < 10){
+                return
+            }
+
+            this.btnloading = true;
+            const response = (await axios.post(route('initiatePayment'), this.form)).data;
+
+            if (response.status === 'error') {
+                this.$swal.fire({
+                    icon: 'error',
+                    title: response.message,
+                    text: response.reason
+                })
+                return;
+            }
+
+            this.loaderMessage = response.message;
+            this.loading = true;
+            this.btnloading = true;
+
+            console.log(response);
+
+            var poll = new FormData();
+            poll.append('ref_num', response.ref_num);
+
+            this.callbackHandler = setInterval(async () => {
+            const response = (await axios.post(route('pese-return'), poll)).data;
+            if (response.status === 'paid') {
+                return this.markAsPaid(response.ref_num);
+            }
+
+            if (this.retries <= 1) {
+                return this.markAsFailed();
+            }
+            this.retries--;
+
+            }, 2000);
+
+            this.btnloading = false;
+        },
+
+
+        markAsFailed() {
+            this.removeCallback();
+            this.removeOverlay();
+            this.$swal.fire({
+                icon:'info',
+                text:'Transaction timed out while waiting for payment.'
+            })
+        },
+
+         markAsPaid(id) {
+
+            // Remove interval
+            this.removeCallback();
+            this.removeOverlay();
+            this.$swal.fire({
+                icon:'success',
+                title:'Payment Successful',
+                text:'We have successfully received your payment!. Please save this reference no. '+id
+            });
+
+            window.location  = route('pese-result',id)
+        },
+
+        removeCallback() {
+            clearInterval(this.callbackHandler);
+        },
+
+        removeOverlay() {
+            this.loading = false;
         },
 
 

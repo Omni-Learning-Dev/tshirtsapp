@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PesepayController;
 
 
 Route::get('/', [PagesController::class,'welcome'])->name('welcome');
@@ -15,5 +16,9 @@ Route::post('/orders', [PagesController::class,'sendOrder'])->name('sendOrder');
 Route::post('/send-order-quantities', [PagesController::class,'sendOrderQuantities'])->name('sendOrderQuantities');
 Route::post('/add-client-to-order', [PagesController::class,'addClientToOrder'])->name('addClientToOrder');
 Route::get('/contact',[PagesController::class,'contact'])->name('Contact');
+
+Route::post('/initiate-payment', [PesepayController::class,'initiatePayment'])->name('initiatePayment');
+Route::get('/payment-result/{id}', [PesepayController::class,'pesePayResult'])->name('pese-result');
+Route::post('/payment-return', [PesepayController::class,'pesePayReturn'])->name('pese-return');
 
 include(__DIR__. '/admin.php');
