@@ -20,5 +20,7 @@ Route::get('/contact',[PagesController::class,'contact'])->name('Contact');
 Route::post('/initiate-payment', [PesepayController::class,'initiatePayment'])->name('initiatePayment');
 Route::get('/payment-result/{id}', [PesepayController::class,'pesePayResult'])->name('pese-result');
 Route::post('/payment-return', [PesepayController::class,'pesePayReturn'])->name('pese-return');
+Route::get('/pesepay-checkout/{order}', [PesepayController::class,'pesePayCheckout'])->name('pesePayCheckout');
+Route::get('/check-payment',[PesepayController::class,'pesePayReturnExternal'])->name('pesePayReturnExternal');
 
 include(__DIR__. '/admin.php');
