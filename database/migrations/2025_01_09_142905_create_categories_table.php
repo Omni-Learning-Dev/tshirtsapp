@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('gender')->nullable();
             $table->string('sizes')->nullable();
+            $table->string('bgcolor')->nullable();
 
             $table->timestamps();
         });

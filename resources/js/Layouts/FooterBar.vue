@@ -4,17 +4,11 @@
         <div>
             <v-container fluid >
                 <v-row>
-                    <v-col cols="12" sm="6" md="6" >
-                        <div class="footer-widget text-center-sm pa-3">
-                            <div class="widget-title font-weight-light">
-                                <img height="45" class="mt-n2" src="/images/logo-main-white.png" alt="logo"  >
-                            </div>
-                        </div>
-                    </v-col>
+
 
                     <v-col cols="12" sm="6" md="6" >
                         <div class="footer-widget text-center-sm pa-2">
-                            <h2 class="widget-title mt-3">Contact Us</h2>
+                            <h2 class="widget-title mt-3 text-h2">Contact Us</h2>
                             <ul class="ml-8">
                                 <li class="footer-link"><a href="#">69 Samora Machel Ave, Harare</a></li>
                                 <li class="footer-link"><a href="mailto:info@capitalkreatives.com">info@capitalkreatives.com</a></li>

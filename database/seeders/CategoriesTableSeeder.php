@@ -17,19 +17,21 @@ class CategoriesTableSeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'T-Shirts',
+                'name' => 'Custom T-Shirts',
                 'slug' => Str::slug('T-Shirts'),
                 'preview_image' => '/categories/tshirts.png',
-                'description' => 'Customizable branded T-shirts for all occasions.',
+                'description' => 'Available in plain and customized branding',
                 'gender' => json_encode(['men', 'women', 'unisex']),
+                'bgcolor' => '#007b51',
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
             [
                 'name' => 'Vest',
                 'slug' => Str::slug('vest'),
                 'preview_image' => '/categories/vest.png',
-                'description' => 'Branded jackets for outdoor and casual wear.',
+                'description' => 'Available in plain and customized branding',
                 'gender' => json_encode(['men', 'women', 'unisex']),
+                'bgcolor' => '#113559',
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
             [
@@ -38,6 +40,7 @@ class CategoriesTableSeeder extends Seeder
                 'preview_image' => '/categories/caps.png',
                 'description' => 'Custom-branded caps for events and promotions.',
                 'gender' => json_encode(['unisex']),
+                'bgcolor' => '#f6c648',
                 'sizes' => json_encode(['One Size']),
             ],
             [
@@ -46,6 +49,7 @@ class CategoriesTableSeeder extends Seeder
                 'preview_image' => '/categories/hoodies.png',
                 'description' => 'Comfortable and stylish hoodies for branding and personalization.',
                 'gender' => json_encode(['men', 'women', 'unisex']),
+                'bgcolor' => '#b1a79e',
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
             [
@@ -54,6 +58,7 @@ class CategoriesTableSeeder extends Seeder
                 'preview_image' => '/categories/polos.png',
                 'description' => 'Premium quality golf shirts for corporate and casual wear.',
                 'gender' => json_encode(['men', 'women']),
+                'bgcolor' => '#d0d0d0',
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
             [
@@ -62,6 +67,7 @@ class CategoriesTableSeeder extends Seeder
                 'preview_image' => '/categories/jackets.png',
                 'description' => 'Classic polos for a professional look with customization.',
                 'gender' => json_encode(['men', 'women']),
+                'bgcolor' => '#1b666c',
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
             ],
         ];

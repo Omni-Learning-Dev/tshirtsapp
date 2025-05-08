@@ -1,26 +1,35 @@
 <?php
 
+use App\Http\Controllers\FormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PesepayController;
 
 
-Route::get('/', [PagesController::class,'welcome'])->name('welcome');
-Route::get('/order/{category}', [PagesController::class,'order'])->name('order');
-Route::get('/order/initiated/{order}', [PagesController::class,'orderInitiated'])->name('orderInitiated');
-Route::get('/order/order-add-client/{order}', [PagesController::class,'orderAddClient'])->name('orderAddClient');
-Route::get('/order/pay-order/{order}', [PagesController::class,'payorder'])->name('payorder');
+Route::get('/', [PagesController::class,'welcome'])->name('home');
 
-Route::delete('/order/{order}/remove-size/{index}', [PagesController::class, 'removeSize'])->name('order.removeSize');
-Route::post('/orders', [PagesController::class,'sendOrder'])->name('sendOrder');
-Route::post('/send-order-quantities', [PagesController::class,'sendOrderQuantities'])->name('sendOrderQuantities');
-Route::post('/add-client-to-order', [PagesController::class,'addClientToOrder'])->name('addClientToOrder');
-Route::get('/contact',[PagesController::class,'contact'])->name('Contact');
+Route::get('/about', [PagesController::class, 'about'])->name('about');
+Route::get('/how-it-works', [PagesController::class, 'howItWorks'])->name('how-it-works');
+Route::get('/shop', [PagesController::class, 'shop'])->name('shop');
 
-Route::post('/initiate-payment', [PesepayController::class,'initiatePayment'])->name('initiatePayment');
-Route::get('/payment-result/{id}', [PesepayController::class,'pesePayResult'])->name('pese-result');
-Route::post('/payment-return', [PesepayController::class,'pesePayReturn'])->name('pese-return');
-Route::get('/pesepay-checkout/{order}', [PesepayController::class,'pesePayCheckout'])->name('pesePayCheckout');
-Route::get('/check-payment',[PesepayController::class,'pesePayReturnExternal'])->name('pesePayReturnExternal');
+// Form Pages - Using Livewire
+Route::get('/t-shirt-form', [FormController::class, 'tShirtForm'])->name('t-shirt-form');
+Route::post('/t-shirt-order', [FormController::class, 'tShirtOrder'])->name('tshirt.order');
+
+Route::get('/vests-form', [FormController::class, 'vestsForm'])->name('vests-form');
+Route::post('/vest-order', [FormController::class, 'vestOrder'])->name('vest.order');
+
+
+Route::get('/jackets-form', [FormController::class, 'jacketsForm'])->name('jackets-form');
+Route::post('/jacket-order', [FormController::class, 'jacketOrder'])->name('jacket.order');
+
+Route::get('/cap-form', [FormController::class, 'capForm'])->name('cap-form');
+Route::post('/cap-order', [FormController::class, 'capOrder'])->name('cap.order');
+
+Route::get('/hoodies-form', [FormController::class, 'hoodiesForm'])->name('hoodies-form');
+Route::post('/hoodie-order', [FormController::class, 'hoodieOrder'])->name('hoodie.order');
+
+Route::get('/golf-t-shirt-form', [FormController::class, 'golfTShirtForm'])->name('golf-t-shirt-form');
+Route::post('/golf-t-shirt-order', [FormController::class, 'golfTShirtOrder'])->name('golf-tshirt.order');
 
 include(__DIR__. '/admin.php');
