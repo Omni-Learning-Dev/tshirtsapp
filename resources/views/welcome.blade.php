@@ -8,37 +8,37 @@
             <div class="frame-6">
                 <div class="shop-boxes">
                     <!-- T-shirts -->
-                    <a href="{{ route('t-shirt-form') }}" class="t-shirt w-inline-block">
+                    <a href="{{ route('view.product','t-shirts') }}" class="t-shirt w-inline-block">
                         <img src="{{ asset('images/Custom-T-shirts-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" sizes="(max-width: 767px) 100vw, 531.2999267578125px" alt="" srcset="{{ asset('images/Custom-T-shirts-White_00000-p-500.png') }} 500w, {{ asset('images/Custom-T-shirts-White_00000.png') }} 506w" class="golf-white">
                         <img src="{{ asset('images/Custom-T-shirts_00000.png') }}" loading="lazy" width="171.60000610351562" height="312" alt="" srcset="{{ asset('images/6bdb9c6b6cd8c13ab88c70f6d6a158c2_Custom-T-shirts_00000-p-500.png') }} 500w, {{ asset('images/Custom-T-shirts_00000.png') }} 506w" sizes="171.59722900390625px" class="man-edied-1">
                     </a>
 
                     <!-- Vests -->
-                    <a href="{{ route('vests-form') }}" class="vests w-inline-block">
+                    <a href="{{ route('view.product','vests') }}" class="vests w-inline-block">
                         <img src="{{ asset('images/Custom-Vests-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" data-w-id="7970d0b9-1542-a7c2-9e7c-3c19ac25bf0d" alt="" class="vest1">
                         <img src="{{ asset('images/Custom-Vests_00000.png') }}" loading="lazy" width="169.25491333007812" height="312" alt="" data-w-id="f881fcc1-f15c-41e8-d816-db8f69398581" style="opacity:0" class="vest2">
                     </a>
 
                     <!-- Jackets -->
-                    <a href="{{ route('jackets-form') }}" class="jacket-fixed w-inline-block">
+                    <a href="{{ route('view.product','jackets') }}" class="jacket-fixed w-inline-block">
                         <img src="{{ asset('images/Custom-Jackets-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="" class="golf-white">
                         <img src="{{ asset('images/Custom-Jackets_00000.png') }}" loading="lazy" alt="" class="man-edied-1">
                     </a>
 
                     <!-- Caps -->
-                    <a href="{{ route('cap-form') }}" class="caps w-inline-block">
+                    <a href="{{ route('view.product','caps') }}" class="caps w-inline-block">
                         <img src="{{ asset('images/Custom-Caps-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="" class="golf-white">
                         <img src="{{ asset('images/Custom-Caps_00000.png') }}" loading="lazy" width="167.89541625976562" height="312" alt="" class="man-edied-1">
                     </a>
 
                     <!-- Hoodies -->
-                    <a href="{{ route('hoodies-form') }}" class="hoodies w-inline-block">
+                    <a href="{{ route('view.product','hoodies') }}" class="hoodies w-inline-block">
                         <img src="{{ asset('images/Custom-Hoodies-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="" class="golf-white">
                         <img src="{{ asset('images/Custom-Hoodies_00000.png') }}" loading="lazy" width="168.886962890625" height="312" alt="" class="man-edied-1">
                     </a>
 
                     <!-- Golf T-shirts -->
-                    <a href="{{ route('golf-t-shirt-form') }}" class="golf-t-shirt w-inline-block">
+                    <a href="{{ route('view.product','golf-shirts') }}" class="golf-t-shirt w-inline-block">
                         <img src="{{ asset('images/Golf-White_00000.png') }}" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="" class="golf-white">
                         <img src="{{ asset('images/Custom-Golf-T-shirts_00000.png') }}" loading="lazy" width="169.37229919433594" height="313" alt="" class="man-edied-1">
                     </a>

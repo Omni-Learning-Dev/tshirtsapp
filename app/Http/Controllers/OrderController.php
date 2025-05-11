@@ -2,101 +2,178 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
-use Inertia\inertia;
+use App\Models\OrderItem;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\CompanyInfo;
 
 class OrderController extends Controller
 {
-    public function index()
+
+    public function placeOrder(Request $request)
     {
-
-        return Inertia('Admin/Orders/AllOrders', [
-            'orders' => Order::all()
+        // Validate order form data
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:100',
+            'postal_code' => 'required|string|max:20',
+            'country' => 'required|string|max:100',
+            'special_instructions' => 'nullable|string',
+            'payment_method' => 'required|in:bank_transfer,on_delivery,pesepay',
+            'terms_agreement' => 'required|accepted',
         ]);
-    }
 
-    public function create() {}
+        // Get cart items from session
+        $cartItems = Session::get('cart_items', []);
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'quantity' => "required",
-            'logo_image' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'front_text' => 'required',
-            'back_text' => 'required',
-            'total_price' => 'required',
-            'status' => 'required',
-            'payment_status' => 'required',
-            'gender' => 'required',
-            'size' => 'required',
-        ]);
-        $order = new Order();
-
-        $order->quantity         = $request->input('quantity');
-        $order->logo_image       = $request->input('logo_image');
-        $order->quantity         = $request->input('quantity');
-        $order->front_text       = $request->input('front_text');
-        $order->back_text        = $request->input('back_text');
-        $order->total_price      = $request->input('total_price');
-        $order->status           = $request->input('status');
-        $order->payment_status   = $request->input('payment_status');
-        $order->gender           = $request->input('gender');
-        $order->size             = $request->input('size');
-
-        if ($request->hasFile('logo_image')) {
-            $filePath = $request->file('logo_image')->store('logos', 'public');
-            $order->logo_image = $filePath; // Store the path to the logo image
+        // Check if cart is empty
+        if (empty($cartItems)) {
+            flash()->error('Your cart is empty. Please add items to cart before checkout.');
+            return redirect()->route('shop');
         }
 
-        $order->save();
+        // Calculate order totals
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
 
-        return back()->with('message', [
-            'title'         => "successfully added",
-            'description'   => 'Details added successfully',
-            'type'           => 'success'
-        ]);
+        // Calculate shipping and tax
+        $shipping = 0;
+        $taxRate  = 0; // 8.25%
+        $tax      = $subtotal * $taxRate;
+        $total    = $subtotal + $shipping + $tax;
+
+        // Generate unique order number
+        $orderNumber = 'ORD-' . strtoupper(Str::random(8));
+
+        // Create the order using database transaction
+        try {
+            DB::beginTransaction();
+
+            // Create new order
+            $order = new Order();
+            $order->order_number = $orderNumber;
+            $order->first_name = $validated['first_name'];
+            $order->last_name = $validated['last_name'];
+            $order->email = $validated['email'];
+            $order->phone = $validated['phone'];
+            $order->address = $validated['address'];
+            $order->city = $validated['city'];
+            $order->postal_code = $validated['postal_code'];
+            $order->country = $validated['country'];
+            $order->special_instructions = $validated['special_instructions'];
+            $order->payment_method = $validated['payment_method'];
+            $order->subtotal = $subtotal;
+            $order->shipping = $shipping;
+            $order->tax = $tax;
+            $order->total = $total;
+            $order->status = 'pending';
+            $order->save();
+
+            // Add order items
+            foreach ($cartItems as $item) {
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $item['id'];
+                $orderItem->product_name = $item['product_name'];
+                $orderItem->price = $item['price'];
+                $orderItem->quantity = $item['quantity'];
+                $orderItem->size = $item['attributes']['size'] ?? null;
+                $orderItem->branding_instructions = $item['attributes']['branding_instructions'] ?? null;
+                $orderItem->save();
+            }
+
+            // Clear cart
+            // Session::forget('cart_items');
+
+            DB::commit();
+
+            // Successful order placement
+            flash()->success('Your order has been placed successfully! Your order number is: ' . $orderNumber);
+
+            // Check if payment method is PesePay
+            if ($validated['payment_method'] === 'pesepay') {
+                // Redirect to the payment gateway
+                return redirect()->route('payment.gateway', ['order_number' => $orderNumber]);
+            }
+
+            // Redirect to order confirmation page
+            return redirect()->route('order.confirmation', ['order_number' => $orderNumber]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Log the error for debugging
+            \Log::error('Order placement failed: ' . $e->getMessage());
+
+            flash()->error('There was an error processing your order. Please try again or contact support.');
+            return redirect()->route('checkout');
+        }
     }
 
-    public function update(Request $request, Order $order)
+
+    public function orderConfirmation($orderNumber)
     {
-
-
-        $request->validate([
-            'quantity' => "required",
-            'logo_image' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-        ]);
-
-        $order->quantity         = $request->quantity;
-        $order->logo_image       = $request->logo_image;
-        $order->quantity         = $request->quantity;
-        $order->front_text       = $request->front_text;
-        $order->back_text        = $request->back_text;
-        $order->total_price      = $request->total_price;
-        $order->status           = $request->status;
-        $order->payment_status   = $request->payment_status;
-        $order->gender           = $request->gender;
-        $order->size             = $request->size;
-
-        $order->save();
-
-        return back()->with('message', [
-            'title'       => 'Successfully',
-            'description' => 'order updated successfully',
-            'type'        => 'success'
-        ]);
+        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+        return view('pages.order-confirmation', compact('order'));
     }
 
-    public function destroy($id)
+    /**
+     * Send order confirmation email
+     *
+     * @param Order $order
+     * @return void
+     */
+    private function sendOrderConfirmationEmail(Order $order)
     {
+        // This is a placeholder for email sending functionality
+        // Implement this using Laravel's Mail facade with a mailable class
 
-        Order::find($id)->delete();
+        // Example implementation:
+        // Mail::to($order->email)->send(new OrderConfirmation($order));
+    }
 
-        return back()->with('message', [
-            'title'       => 'Successfully',
-            'description' => 'Order Deleted',
-            'type'        => 'success'
+
+    public function downloadOrderPdf($orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)
+            ->with('orderItems')
+            ->firstOrFail();
+
+         $companyInfo = CompanyInfo::first();
+
+        $pdf = PDF::loadView('pdfs.order-confirmation', [
+            'order' => $order,
+            'companyInfo' => $companyInfo
+        ]);
+
+        return $pdf->download('order_'.$order->order_number.'.pdf');
+    }
+
+
+    public function printOrder($orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)
+            ->with('orderItems')
+            ->firstOrFail();
+
+        // Get company info (you can store this in config or database)
+         $companyInfo = CompanyInfo::first();
+
+        return view('pages.print-order', [
+            'order' => $order,
+            'companyInfo' => $companyInfo
         ]);
     }
 }

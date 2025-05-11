@@ -6,7 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "binafy/laravel-cart": "^1.2",
         "emmanuelsiziba/pesepay": "^2.1",
+        "filament/filament": "^3.3",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/helpers": "^1.7",
@@ -14,7 +17,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
-        "tightenco/ziggy": "^2.0"
+        "tightenco/ziggy": "^2.0",
+        "yoeunes/toastr": "^3.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

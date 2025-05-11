@@ -2,7 +2,7 @@
 <html data-wf-page="68152a2ec418651a6f726115" data-wf-site="68152a2ec418651a6f7260fd">
 <head>
     <meta charset="utf-8">
-    <title>{{ config('app.name', 'Makomborero\'s Beautiful Site') }}</title>
+    <title>{{ config('app.name', 'Capital Kreatives') }}</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
 
@@ -17,7 +17,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
     <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Bebas Neue:regular"]  }});</script>
 
+    <style>
+        html, body {
+            overflow-x: hidden; /* Prevent horizontal scroll at document level */
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
 
+        .fl-wrapper{
+            z-index: 105086!important;
+        }
+    </style>
 
     <!-- Livewire Styles - Only for form pages -->
     @livewireStyles

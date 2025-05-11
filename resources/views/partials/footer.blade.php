@@ -16,6 +16,7 @@
         </a>
     </div>
     <a href="#Nav-Bar" class="button-4 w-button">Back To Top</a>
+    <a href="/admin" class="button-4 w-button">Admin Portal</a>
     <div class="pattern-straight">
         <img sizes="(max-width: 4000px) 100vw, 4000px" srcset="{{ asset('images/Pattern-Long_00000-p-500.png') }} 500w, {{ asset('images/Pattern-Long_00000-p-800.png') }} 800w, {{ asset('images/Pattern-Long_00000-p-1080.png') }} 1080w, {{ asset('images/Pattern-Long_00000-p-2000.png') }} 2000w, {{ asset('images/Pattern-Long_00000-p-2600.png') }} 2600w, {{ asset('images/Pattern-Long_00000-p-3200.png') }} 3200w, {{ asset('images/Pattern-Long_00000.png') }} 4000w" alt="" src="{{ asset('images/Pattern-Long_00000.png') }}" loading="lazy" class="pattern">
     </div>

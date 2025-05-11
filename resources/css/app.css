@@ -1,72 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
 
-body {
-    font-family: 'Roboto', serif !important;
-    font-optical-sizing: auto !important;
-    font-weight: 300 !important;
-}
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
 
-.bebas-neue-regular {
-    font-family: 'Bebas Neue', serif;
-    font-weight: 300;
-    font-style: normal;
-}
-
-h1 {
-    font-family: 'Bebas Neue', serif !important;
-    font-weight: 400 !important;
-    font-style: normal !important;
-}
-
-.glass {
-    background: rgba(255, 255, 255, 0.5) !important;
-    border-radius: 10px !important;
-    box-shadow: 8px 10px 30px rgba(0, 100, 0, 0.1) !important;
-    backdrop-filter: blur(0px) !important;
-    -webkit-backdrop-filter: blur(0px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.64) !important;
-    padding: 0.75rem;
-}
-
-.glass-shadow {
-    box-shadow: 8px 10px 30px rgba(0, 100, 0, 0.1) !important;
-    backdrop-filter: blur(0px) !important;
-    -webkit-backdrop-filter: blur(0px) !important;
-}
-
-.glass-border {
-    box-shadow: 4px 5px 10px rgba(0, 50, 0, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.64) !important;
-}
-
-#inspire {
-    background: rgb(58, 157, 207);
-    background: radial-gradient(circle, rgba(58, 157, 207, 1) 0%, rgba(2, 52, 89, 1) 63%);
-}
-
-.InertiaLink {
-    text-decoration: none !important;
-    color: unset !important;
-    width: 100%;
-}
-
-.v-btn {
-    text-transform: unset !important;
-}
-
-.active-sidebar {
-    background-color: #0072ab !important;
-    color: white !important;
-}
-
-.swal2-actions button {
-    color: white !important;
-}
-
-.userinfo i {
-    font-size: 40px !important;
-}
-
-.v-list-item--density-default:not(.v-list-item--nav).v-list-item--one-line {
-    padding-inline: 4px !important;
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
 }

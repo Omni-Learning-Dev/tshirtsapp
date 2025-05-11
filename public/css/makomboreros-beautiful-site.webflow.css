@@ -1047,7 +1047,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding-top: 72px;
   padding-bottom: 72px;
   display: flex;
@@ -1070,7 +1070,7 @@
   justify-content: center;
   align-items: center;
   width: 40vw;
-  height: 80vh;
+  min-height: 80vh;
   margin-left: 29px;
   margin-right: 97px;
   padding-left: 32px;
@@ -1351,12 +1351,9 @@
 
 .product-header {
   color: #191919;
-  background-color: #dedede;
   flex-flow: column;
   justify-content: flex-end;
   align-items: center;
-  width: 100vw;
-  height: 16vh;
   display: flex;
 }
 
@@ -1668,7 +1665,7 @@
   }
 
   .form-border {
-    height: 56vh;
+    min-height: 56vh;
   }
 
   .paragraph-values, .paragraph-vision {
@@ -1877,7 +1874,7 @@
     background-position: 0%;
     justify-content: center;
     align-items: center;
-    height: 70vh;
+    min-height: 70vh;
   }
 
   .gradient-strip {
@@ -1889,7 +1886,7 @@
 
   .form-border {
     width: 40vw;
-    height: 50vh;
+    min-height: 50vh;
     margin-left: 0;
     margin-right: -50px;
   }
@@ -2224,7 +2221,7 @@
 
   .form-border {
     width: 80vw;
-    height: 55vh;
+    min-height: 55vh;
     margin-top: 40px;
     margin-left: 0;
     margin-right: 0;
