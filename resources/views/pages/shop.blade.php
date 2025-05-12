@@ -1,122 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- First Row of Products -->
-    <section class="section-4">
-        <!-- Puffer Vest -->
-        <div class="item-1">
-            <div class="text-8-copy">PUFFER VEST</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/black-3d-vest-PNG.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 900px) 100vw, 900px"
-                 srcset="{{ asset('images/black-3d-vest-PNG-p-500.png') }} 500w, {{ asset('images/black-3d-vest-PNG-p-800.png') }} 800w, {{ asset('images/black-3d-vest-PNG.png') }} 900w"
-                 alt=""
-                 class="image-22">
-        </div>
+    <!-- Products Grid -->
+    <div class="shop-products">
+        @foreach($products->chunk(4) as $productRow)
+            <section class="section-4">
+                @foreach($productRow as $product)
+                    <div class="item-1">
+                        <a href="{{ route('view.product', $product->slug) }}" class="product-link">
+                            <div class="text-8-copy">{{ strtoupper($product->product_name) }}</div>
+                            <div class="small-text">{{ Str::limit($product->description, 80) }}</div>
+                            <div class="product-price">${{ number_format($product->price, 2) }}</div>
+                            <img src="{{ $product->image_url }}"
+                                 loading="lazy"
+                                 alt="{{ $product->product_name }}"
+                                 class="product-image">
+                        </a>
+                    </div>
+                @endforeach
 
-        <!-- T-shirt -->
-        <div class="item-1">
-            <div class="text-8-copy">T-shirt</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/Black-Tshirt-small_00000.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 1000px) 100vw, 1000px"
-                 srcset="{{ asset('images/Black-Tshirt-small_00000-p-500.png') }} 500w, {{ asset('images/Black-Tshirt-small_00000-p-800.png') }} 800w, {{ asset('images/Black-Tshirt-small_00000.png') }} 1000w"
-                 alt=""
-                 class="image-23">
-        </div>
+                {{-- Fill the row with empty items if needed --}}
+                @for($i = count($productRow); $i < 4; $i++)
+                    <div class="item-1 empty-item"></div>
+                @endfor
+            </section>
+        @endforeach
+    </div>
 
-        <!-- Golf T-shirt -->
-        <div class="item-1">
-            <div class="text-8-copy">Golf T-shirt</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/Golf-T-shirt_00000.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 1000px) 100vw, 1000px"
-                 srcset="{{ asset('images/Golf-T-shirt_00000-p-500.png') }} 500w, {{ asset('images/Golf-T-shirt_00000-p-800.png') }} 800w, {{ asset('images/Golf-T-shirt_00000.png') }} 1000w"
-                 alt=""
-                 class="image-23">
+    {{-- Show message if no products found --}}
+    @if($products->isEmpty())
+        <div class="no-products">
+            <p>No products available at the moment. Please check back soon!</p>
         </div>
+    @endif
 
-        <!-- Cap -->
-        <div class="item-1">
-            <div class="text-8-copy">CAP</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/black-cap-PNG.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 1920px) 100vw, 1920px"
-                 srcset="{{ asset('images/black-cap-PNG-p-500.png') }} 500w, {{ asset('images/black-cap-PNG-p-800.png') }} 800w, {{ asset('images/black-cap-PNG-p-1080.png') }} 1080w, {{ asset('images/black-cap-PNG-p-1600.png') }} 1600w, {{ asset('images/black-cap-PNG.png') }} 1920w"
-                 alt=""
-                 class="image-24">
-        </div>
-    </section>
+    <style>
+        .shop-products {
+            padding: 40px 0;
+        }
 
-    <!-- Second Row of Products -->
-    <section class="section-4">
-        <!-- Jacket -->
-        <div class="item-1">
-            <div class="text-8-copy">JACKET</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/black-jacket.png') }}"
-                 loading="lazy"
-                 width="407"
-                 sizes="(max-width: 479px) 100vw, 407px"
-                 srcset="{{ asset('images/black-jacket-p-500.png') }} 500w, {{ asset('images/black-jacket-p-800.png') }} 800w, {{ asset('images/black-jacket-p-1080.png') }} 1080w, {{ asset('images/black-jacket-p-1600.png') }} 1600w, {{ asset('images/black-jacket.png') }} 1920w"
-                 alt=""
-                 class="image-25">
-        </div>
+        .product-link {
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
 
-        <!-- Hoodie -->
-        <div class="item-1">
-            <div class="text-8-copy">HOODIE</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/Black-Hoodie_00000.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 1000px) 100vw, 1000px"
-                 srcset="{{ asset('images/Black-Hoodie_00000-p-500.png') }} 500w, {{ asset('images/Black-Hoodie_00000-p-800.png') }} 800w, {{ asset('images/Black-Hoodie_00000.png') }} 1000w"
-                 alt=""
-                 class="image-26">
-        </div>
+        .product-image {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
 
-        <!-- Customizable 1 -->
-        <div class="item-1">
-            <div class="text-8-copy">Customizable</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/black-3d-vest-PNG.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 900px) 100vw, 900px"
-                 srcset="{{ asset('images/black-3d-vest-PNG-p-500.png') }} 500w, {{ asset('images/black-3d-vest-PNG-p-800.png') }} 800w, {{ asset('images/black-3d-vest-PNG.png') }} 900w"
-                 alt=""
-                 class="image-22">
-        </div>
+        .item-1:hover .product-image {
+            transform: scale(1.05);
+        }
 
-        <!-- Customizable 2 -->
-        <div class="item-1">
-            <div class="text-8-copy">Customizable</div>
-            <div class="small-text">Place an order for CK branding
-                anywhere, anytime and your order
-                will arrive within the stated time</div>
-            <img src="{{ asset('images/black-3d-vest-PNG.png') }}"
-                 loading="lazy"
-                 sizes="(max-width: 900px) 100vw, 900px"
-                 srcset="{{ asset('images/black-3d-vest-PNG-p-500.png') }} 500w, {{ asset('images/black-3d-vest-PNG-p-800.png') }} 800w, {{ asset('images/black-3d-vest-PNG.png') }} 900w"
-                 alt=""
-                 class="image-22">
-        </div>
-    </section>
+        .product-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: #f6c648;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .empty-item {
+            visibility: hidden;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 50px 0;
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* Keep your existing styles as well */
+    </style>
 @endsection

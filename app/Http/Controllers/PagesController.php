@@ -25,7 +25,8 @@ class PagesController extends Controller
 
     public function shop()
     {
-        return view('pages.shop');
+         $products = Product::with('primaryImage')->get();
+        return view('pages.shop', ['products' => $products]);
     }
 
     public function viewProduct($slug)
