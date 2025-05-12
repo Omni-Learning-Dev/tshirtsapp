@@ -10,7 +10,7 @@
     <link href="{{ asset('css/normalize.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/webflow.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/makomboreros-beautiful-site.webflow.css') }}" rel="stylesheet" type="text/css">
-
+<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
