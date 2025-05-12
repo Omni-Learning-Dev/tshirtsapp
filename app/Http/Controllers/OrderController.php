@@ -176,4 +176,12 @@ class OrderController extends Controller
             'companyInfo' => $companyInfo
         ]);
     }
+
+    public function track(Order $order)
+    {
+        // You could implement order tracking logic here
+        // For now, we'll just show order details
+
+        return view('pages.track', compact('order'));
+    }
 }

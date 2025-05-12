@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PaymentController;
@@ -30,6 +31,11 @@ Route::get('/check-payment',[PaymentController::class,'pesePayReturnExternal'])-
 Route::get('/payment-success/{id}', [PaymentController::class,'pesePayResult'])->name('pese-result');
 Route::get('/pese-pay/checkout', [PaymentController::class,'pesePayCheckout'])->name('pesePayCheckout');
 Route::get('/payment/gateway/{order_number}', [PaymentController::class, 'paymentGateway'])->name('payment.gateway');
+
+
+Route::get('/invoice/{order}/print', [InvoiceController::class, 'print'])->name('invoice.print');
+Route::get('/invoice/{order}/download', [InvoiceController::class, 'download'])->name('invoice.download');
+Route::get('/order/{order}/track', [OrderController::class, 'track'])->name('order.track');
 
 Route::get('/terms', function() {
     return view('pages.terms');
