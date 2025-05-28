@@ -18,18 +18,15 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        // Validate order form data
+        // Validate order form data based on new simplified form
         $validated = $request->validate([
-            'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:100',
-            'special_instructions' => 'nullable|string',
-            'payment_method' => 'required|in:bank_transfer,on_delivery,pesepay',
+            'delivery_method' => 'required|in:pickup,delivery',
+            'address' => 'required_if:delivery_method,delivery|nullable|string|max:1000',
+            'special_instructions' => 'nullable|string|max:1000',
+            'payment_method' => 'required|in:pesepay',
             'terms_agreement' => 'required|accepted',
         ]);
 
@@ -48,11 +45,11 @@ class OrderController extends Controller
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        // Calculate shipping and tax
-        $shipping = 0;
-        $taxRate  = 0; // 8.25%
-        $tax      = $subtotal * $taxRate;
-        $total    = $subtotal + $shipping + $tax;
+        // Calculate shipping based on delivery method
+        $shipping = ($validated['delivery_method'] === 'delivery') ? 5.00 : 0.00;
+        $taxRate = 0; // No tax for now
+        $tax = $subtotal * $taxRate;
+        $total = $subtotal + $shipping + $tax;
 
         // Generate unique order number
         $orderNumber = 'ORD-' . strtoupper(Str::random(8));
@@ -64,14 +61,11 @@ class OrderController extends Controller
             // Create new order
             $order = new Order();
             $order->order_number = $orderNumber;
-            $order->first_name = $validated['first_name'];
-            $order->last_name = $validated['last_name'];
+            $order->name = $validated['name'];
             $order->email = $validated['email'];
             $order->phone = $validated['phone'];
+            $order->delivery_method = $validated['delivery_method'];
             $order->address = $validated['address'];
-            $order->city = $validated['city'];
-            $order->postal_code = $validated['postal_code'];
-            $order->country = $validated['country'];
             $order->special_instructions = $validated['special_instructions'];
             $order->payment_method = $validated['payment_method'];
             $order->subtotal = $subtotal;
@@ -81,21 +75,42 @@ class OrderController extends Controller
             $order->status = 'pending';
             $order->save();
 
-            // Add order items
-            foreach ($cartItems as $item) {
+            // Add order items with enhanced attributes
+            foreach ($cartItems as $cartKey => $item) {
                 $orderItem = new OrderItem();
                 $orderItem->order_id = $order->id;
                 $orderItem->product_id = $item['id'];
                 $orderItem->product_name = $item['product_name'];
                 $orderItem->price = $item['price'];
                 $orderItem->quantity = $item['quantity'];
-                $orderItem->size = $item['attributes']['size'] ?? null;
-                $orderItem->branding_instructions = $item['attributes']['branding_instructions'] ?? null;
+
+                // Handle attributes
+                if (isset($item['attributes'])) {
+                    $attributes = $item['attributes'];
+
+                    // Size
+                    $orderItem->size = $attributes['size'] ?? null;
+
+                    // Color handling (custom vs standard)
+                    if (isset($attributes['is_custom_color']) && $attributes['is_custom_color']) {
+                        $orderItem->custom_color = $attributes['color'];
+                        $orderItem->is_custom_color = true;
+                    } else {
+                        $orderItem->color = $attributes['color'] ?? null;
+                        $orderItem->is_custom_color = false;
+                    }
+
+                    // Customization details
+                    $orderItem->logo_path = $attributes['logo_path'] ?? null;
+                    $orderItem->branding_instructions = $attributes['branding_instructions'] ?? null;
+                    $orderItem->has_customization = isset($attributes['customization']) ? (bool)$attributes['customization'] : false;
+                }
+
                 $orderItem->save();
             }
 
-            // Clear cart
-            // Session::forget('cart_items');
+            // Clear cart after successful order
+            Session::forget('cart_items');
 
             DB::commit();
 
@@ -122,10 +137,12 @@ class OrderController extends Controller
         }
     }
 
-
     public function orderConfirmation($orderNumber)
     {
-        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+        $order = Order::where('order_number', $orderNumber)
+            ->with('orderItems')
+            ->firstOrFail();
+
         return view('pages.order-confirmation', compact('order'));
     }
 
@@ -144,14 +161,13 @@ class OrderController extends Controller
         // Mail::to($order->email)->send(new OrderConfirmation($order));
     }
 
-
     public function downloadOrderPdf($orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)
             ->with('orderItems')
             ->firstOrFail();
 
-         $companyInfo = CompanyInfo::first();
+        $companyInfo = CompanyInfo::first();
 
         $pdf = PDF::loadView('pdfs.order-confirmation', [
             'order' => $order,
@@ -161,15 +177,14 @@ class OrderController extends Controller
         return $pdf->download('order_'.$order->order_number.'.pdf');
     }
 
-
     public function printOrder($orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)
             ->with('orderItems')
             ->firstOrFail();
 
-        // Get company info (you can store this in config or database)
-         $companyInfo = CompanyInfo::first();
+        // Get company info
+        $companyInfo = CompanyInfo::first();
 
         return view('pages.print-order', [
             'order' => $order,

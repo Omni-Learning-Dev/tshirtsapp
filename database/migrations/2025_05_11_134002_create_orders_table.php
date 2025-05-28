@@ -14,14 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('name'); // Single name field instead of first_name/last_name
             $table->string('email');
             $table->string('phone');
-            $table->string('address');
-            $table->string('city');
-            $table->string('postal_code');
-            $table->string('country');
+            $table->enum('delivery_method', ['pickup', 'delivery']); // Pickup or Delivery option
+            $table->text('address')->nullable(); // Full address with directions (only for delivery)
             $table->text('special_instructions')->nullable();
             $table->string('payment_method');
             $table->decimal('subtotal', 10, 2);
