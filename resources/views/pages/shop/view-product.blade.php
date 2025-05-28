@@ -45,7 +45,6 @@
                     <input type="hidden" name="size" id="selected-size-input" value="">
 
                     <!-- Color Selection -->
-
                     <div class="optionsbox"  >
                         <div class="option-section" >
                             <div class="option-label">Colors:</div>
@@ -55,20 +54,19 @@
                                     $colorMap = [
                                         'White' => '#FFFFFF',
                                         'Black' => '#000000',
-                                        'Navy' => '#000080',
                                         'Red' => '#FF0000',
                                         'Green' => '#008000',
-                                        'Yellow' => '#FFFF00',
                                         'Blue' => '#0000FF',
+                                        'Navy' => '#000080',
+                                        'Yellow' => '#FFFF00',
                                         'Grey' => '#808080',
+                                        'Gray' => '#808080',
                                         'Khaki' => '#F0E68C',
                                         'Maroon' => '#800000',
                                         'Forest Green' => '#228B22',
                                         'Sky Blue' => '#87CEEB',
                                         'Lime Green' => '#32CD32',
                                         'Orange' => '#FFA500',
-                                        'Teal' => '#008080',
-                                        'Light Blue' => '#ADD8E6',
                                     ];
                                 @endphp
 
@@ -82,6 +80,21 @@
                                         @endif
                                     </div>
                                 @endforeach
+                            </div>
+
+                            <!-- Custom Color Input -->
+                            <div class="custom-color-section">
+                                <div class="custom-color-toggle">
+                                    <input type="checkbox" id="custom-color-checkbox" onchange="toggleCustomColor()">
+                                    <label for="custom-color-checkbox">Need a different color?</label>
+                                </div>
+                                <div id="custom-color-input" class="custom-color-input" style="display: none;">
+                                    <input type="text"
+                                           name="custom_color"
+                                           id="custom-color-field"
+                                           placeholder="Specify your preferred color"
+                                           class="custom-color-field">
+                                </div>
                             </div>
                         </div>
 
@@ -164,6 +177,22 @@
             logoUploadDiv.style.display = customizationCheckbox.checked ? 'block' : 'none';
         }
 
+        // Function to toggle custom color input
+        function toggleCustomColor() {
+            const customColorCheckbox = document.getElementById('custom-color-checkbox');
+            const customColorInput = document.getElementById('custom-color-input');
+
+            customColorInput.style.display = customColorCheckbox.checked ? 'block' : 'none';
+
+            if (customColorCheckbox.checked) {
+                // Clear any selected color options
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                document.getElementById('selected-color-input').value = '';
+            }
+        }
+
         // Function to change the main product image
         function changeMainImage(imageUrl) {
             const mainImage = document.querySelector('.vest-product');
@@ -182,6 +211,13 @@
 
             // Update hidden input
             document.getElementById('selected-color-input').value = colorName;
+
+            // Uncheck custom color if a predefined color is selected
+            const customColorCheckbox = document.getElementById('custom-color-checkbox');
+            const customColorInput = document.getElementById('custom-color-input');
+            customColorCheckbox.checked = false;
+            customColorInput.style.display = 'none';
+            document.getElementById('custom-color-field').value = '';
         }
 
         // Function to select size
@@ -197,6 +233,31 @@
             // Update hidden input
             document.getElementById('selected-size-input').value = sizeName;
         }
+
+        // Handle form submission to check for custom color
+        document.querySelector('.esform').addEventListener('submit', function(e) {
+            const customColorCheckbox = document.getElementById('custom-color-checkbox');
+            const customColorField = document.getElementById('custom-color-field');
+            const selectedColorInput = document.getElementById('selected-color-input');
+
+            if (customColorCheckbox.checked && customColorField.value.trim()) {
+                selectedColorInput.value = customColorField.value.trim();
+            }
+
+            // Validate that a color is selected
+            if (!selectedColorInput.value) {
+                e.preventDefault();
+                alert('Please select a color or specify a custom color.');
+                return false;
+            }
+
+            // Validate that a size is selected
+            if (!document.getElementById('selected-size-input').value) {
+                e.preventDefault();
+                alert('Please select a size.');
+                return false;
+            }
+        });
 
         // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
@@ -324,6 +385,47 @@
             border: 1px solid #ddd;
         }
 
+        /* Custom color section */
+        .custom-color-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .custom-color-toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .custom-color-toggle input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .custom-color-toggle label {
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .custom-color-input {
+            margin-top: 10px;
+        }
+
+        .custom-color-field {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-color-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 1px #3b82f6;
+        }
+
         /* Size selection */
         .size-options {
             display: flex;
@@ -417,7 +519,6 @@
         .add-to-cart-btn:hover {
             background-color: #2563eb;
         }
-
 
         /* Branding section */
         .branding-section {

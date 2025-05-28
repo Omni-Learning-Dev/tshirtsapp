@@ -25,7 +25,7 @@ class PagesController extends Controller
 
     public function shop()
     {
-         $products = Product::with('primaryImage')->get();
+        $products = Product::with('primaryImage')->get();
         return view('pages.shop', ['products' => $products]);
     }
 
@@ -46,33 +46,62 @@ class PagesController extends Controller
             $product->colors = json_decode($product->colors);
         }
 
-        return view('pages.shop.view-product', compact('product'));
-    }
+        // Get cart count for the view cart button
+        $cartItems = Session::get('cart_items', []);
+        $cartCount = count($cartItems);
 
+        return view('pages.shop.view-product', compact('product', 'cartCount'));
+    }
 
     public function addToCart(Request $request)
     {
+        // Validate the request
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'color' => 'required|string',
+            'size' => 'required|string',
+            'quantity' => 'required|integer|min:1',
+            'custom_color' => 'nullable|string|max:255',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
+            'branding_instructions' => 'nullable|string|max:1000'
+        ]);
 
         $product = Product::find($request->product_id);
         $cartItems = Session::get('cart_items', []);
 
+        // Handle color selection - use custom color if provided, otherwise use selected color
+        $selectedColor = $request->custom_color ?: $request->color;
+        $isCustomColor = !empty($request->custom_color);
 
-        // Check if product already exists in cart
-        if (isset($cartItems[$request->product_id])) {
-            // Increase quantity if product already in cart
-            $cartItems[$request->product_id]['quantity'] += 1;
+        // Handle logo upload if provided
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
+
+        // Create unique cart key based on product, color, and size
+        $cartKey = $request->product_id . '_' . str_replace(' ', '_', strtolower($selectedColor)) . '_' . str_replace(' ', '_', strtolower($request->size));
+
+        // Check if exact same product with same attributes already exists in cart
+        if (isset($cartItems[$cartKey])) {
+            // Increase quantity if exact same product configuration is already in cart
+            $cartItems[$cartKey]['quantity'] += (int)$request->quantity;
             flash()->info('Product quantity updated in cart');
         } else {
-            // Add new product to cart
-            $cartItems[$request->product_id] = [
+            // Add new product configuration to cart
+            $cartItems[$cartKey] = [
                 'id' => $product->id,
                 'product_name' => $product->product_name,
                 'price' => $product->price,
-                'quantity' => 1,
+                'quantity' => (int)$request->quantity,
                 'attributes' => [
+                    'color' => $selectedColor,
+                    'is_custom_color' => $isCustomColor,
                     'size' => $request->size,
-                    'image' => $product->primaryImage->image_path,
-                    'branding_instructions' => $request->branding_instructions
+                    'image' => $product->primaryImage ? $product->primaryImage->image_path : null,
+                    'logo_path' => $logoPath,
+                    'branding_instructions' => $request->branding_instructions,
+                    'customization' => $request->has('customization') ? true : false
                 ]
             ];
             flash()->success('Product added to cart successfully');
@@ -81,9 +110,8 @@ class PagesController extends Controller
         // Save cart back to session
         Session::put('cart_items', $cartItems);
 
-        return back();
+        return redirect()->route('cart');
     }
-
 
     public function cart(){
         $cartItems = Session::get('cart_items', []);
@@ -100,15 +128,15 @@ class PagesController extends Controller
     {
         // Validate request
         $request->validate([
-            'product_id' => 'required|exists:products,id'
+            'cart_key' => 'required|string'
         ]);
 
         $cartItems = Session::get('cart_items', []);
 
-        // Check if product exists in cart
-        if (isset($cartItems[$request->product_id])) {
-            // Remove the product from the cart
-            unset($cartItems[$request->product_id]);
+        // Check if cart item exists
+        if (isset($cartItems[$request->cart_key])) {
+            // Remove the item from the cart
+            unset($cartItems[$request->cart_key]);
 
             // Save updated cart back to session
             Session::put('cart_items', $cartItems);
@@ -121,21 +149,20 @@ class PagesController extends Controller
         return redirect()->route('cart');
     }
 
-
     public function updateCart(Request $request)
     {
         // Validate request
         $request->validate([
-            'product_id' => 'required|exists:products,id',
+            'cart_key' => 'required|string',
             'action' => 'required|in:increase,decrease,update',
             'quantity' => 'sometimes|integer|min:1'
         ]);
 
         $cartItems = Session::get('cart_items', []);
-        $productId = $request->product_id;
+        $cartKey = $request->cart_key;
 
-        // Check if product exists in cart
-        if (!isset($cartItems[$productId])) {
+        // Check if cart item exists
+        if (!isset($cartItems[$cartKey])) {
             flash()->error('Product not found in cart');
             return redirect()->route('cart');
         }
@@ -143,17 +170,17 @@ class PagesController extends Controller
         // Handle different actions
         switch ($request->action) {
             case 'increase':
-                $cartItems[$productId]['quantity'] += 1;
+                $cartItems[$cartKey]['quantity'] += 1;
                 flash()->info('Product quantity increased');
                 break;
 
             case 'decrease':
-                if ($cartItems[$productId]['quantity'] > 1) {
-                    $cartItems[$productId]['quantity'] -= 1;
+                if ($cartItems[$cartKey]['quantity'] > 1) {
+                    $cartItems[$cartKey]['quantity'] -= 1;
                     flash()->info('Product quantity decreased');
                 } else {
                     // Remove the product if quantity will be 0
-                    unset($cartItems[$productId]);
+                    unset($cartItems[$cartKey]);
                     flash()->success('Product removed from cart');
                 }
                 break;
@@ -163,11 +190,11 @@ class PagesController extends Controller
                 if ($request->has('quantity')) {
                     $quantity = (int) $request->quantity;
                     if ($quantity > 0) {
-                        $cartItems[$productId]['quantity'] = $quantity;
+                        $cartItems[$cartKey]['quantity'] = $quantity;
                         flash()->info('Product quantity updated');
                     } else {
                         // Remove the product if quantity is 0
-                        unset($cartItems[$productId]);
+                        unset($cartItems[$cartKey]);
                         flash()->success('Product removed from cart');
                     }
                 }
@@ -179,7 +206,6 @@ class PagesController extends Controller
 
         return redirect()->route('cart');
     }
-
 
     public function checkout()
     {
@@ -209,7 +235,4 @@ class PagesController extends Controller
 
         return view('pages.checkout', compact('cartItems', 'subtotal', 'shipping', 'tax', 'total'));
     }
-
-
-
 }

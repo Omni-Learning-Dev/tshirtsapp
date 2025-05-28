@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 't-shirts',
                 'price' => 15.99,
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
-                'colors' => json_encode(['White', 'Black', 'Navy', 'Red', 'Green', 'Yellow']),
+                'colors' => json_encode(['White', 'Black', 'Navy']), // Updated: Only White, Black, Navy
                 'description' => 'High-quality cotton t-shirts available in plain styles or with customized branding. Perfect for corporate events, promotions, and team uniforms.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'vests',
                 'price' => 29.99,
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
-                'colors' => json_encode(['Black', 'Navy', 'Grey', 'Khaki']),
+                'colors' => json_encode(['Black']), // Updated: Only Black color
                 'description' => 'Professional vests for corporate settings. Durable fabric with customizable embroidery options for your company logo.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'caps',
                 'price' => 12.99,
                 'sizes' => json_encode(['One Size']),
-                'colors' => json_encode(['White', 'Black', 'Red', 'Blue', 'Yellow', 'Green']),
+                'colors' => json_encode(['White', 'Black', 'Navy']), // Unchanged
                 'description' => 'Custom-branded caps for events, promotions, and corporate giveaways. Available with embroidered or printed logos.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'hoodies',
                 'price' => 32.99,
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
-                'colors' => json_encode(['Black', 'Grey', 'Navy', 'Maroon', 'Forest Green']),
+                'colors' => json_encode(['Black', 'white']), // Unchanged
                 'description' => 'Comfortable and stylish hoodies for branding and personalization. Ideal for corporate retreats, staff uniforms, and promotional campaigns.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'golf-shirts',
                 'price' => 24.99,
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
-                'colors' => json_encode(['White', 'Black', 'Navy', 'Sky Blue', 'Lime Green', 'Orange']),
+                'colors' => json_encode(['White', 'Black', 'Navy',]), // Unchanged
                 'description' => 'Premium quality golf shirts for corporate events and casual business wear. Moisture-wicking fabric with customizable embroidery options.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'jackets',
                 'price' => 49.99,
                 'sizes' => json_encode(['S', 'M', 'L', 'XL', 'XXL']),
-                'colors' => json_encode(['Black', 'Navy', 'Grey', 'Red']),
+                'colors' => json_encode(['Black']), // Updated: Only Black color
                 'description' => 'Professional jackets for corporate branding. Weather-resistant with multiple customization options including embroidery and patches.',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -86,6 +86,60 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('products')->insert($products);
+
+        // Seed product images
+        $productImages = [
+            // Custom T-Shirts (product_id: 1)
+            [
+                'product_id' => 1,
+                'image_path' => 'Black-Tshirt-small_00000.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Corporate Vests (product_id: 2)
+            [
+                'product_id' => 2,
+                'image_path' => 'black-3d-vest-PNG.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Branded Caps (product_id: 3)
+            [
+                'product_id' => 3,
+                'image_path' => 'black-cap-PNG.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Premium Hoodies (product_id: 4)
+            [
+                'product_id' => 4,
+                'image_path' => 'Black-Hoodie_00000.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Golf T-Shirts (product_id: 5)
+            [
+                'product_id' => 5,
+                'image_path' => 'Golf-T-shirt_00000-p-500.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Corporate Jackets (product_id: 6)
+            [
+                'product_id' => 6,
+                'image_path' => 'black-jacket.png',
+                'is_primary' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        DB::table('product_images')->insert($productImages);
 
         DB::table('company_infos')->insert([
             'name' => 'Capital Kreatives',
@@ -95,7 +149,5 @@ class DatabaseSeeder extends Seeder
             'email' => 'info@capitalkreatives.com',
             'website' => 'capitalkreatives.com',
         ]);
-
-
     }
 }
